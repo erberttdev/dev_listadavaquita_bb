@@ -10,5 +10,6 @@ dj-database-url==2.1.0
 python-decouple==3.8
 django-heroku==0.3.1
 django-cors-headers==4.3.1
+django-allauth
 mercadopago==2.1.0
 PyQt5==5.15.10
