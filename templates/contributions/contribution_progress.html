@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Progresso da Vaquinha para {{ gift.name }}</h1>
+    <p>Meta: R$ {{ goal }}</p>
+    <p>Contribuído: R$ {{ total_contributed }}</p>
+    <div class="progress mb-3" style="height: 30px;">
+        <div class="progress-bar" role="progressbar" style="width: {{ progress_percent }}%;" aria-valuenow="{{ progress_percent }}" aria-valuemin="0" aria-valuemax="100">{{ progress_percent }}%</div>
+    </div>
+    <a href="{% url 'events:event_detail' gift.event.pk %}" class="btn btn-secondary">Voltar ao Evento</a>
+</div>
+{% endblock %}

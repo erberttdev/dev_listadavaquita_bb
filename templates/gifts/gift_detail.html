@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ gift.name }}</h1>
+    <p><strong>Valor:</strong> R$ {{ gift.value }}</p>
+    <p><strong>Loja:</strong> {{ gift.store_name }} ({{ gift.get_store_type_display }})</p>
+    <p><strong>Endereço/Link:</strong> <a href="{{ gift.store_address_or_link }}" target="_blank">{{ gift.store_address_or_link }}</a></p>
+    {% if gift.photo %}
+    <img src="{{ gift.photo.url }}" alt="{{ gift.name }}" class="img-fluid mb-3" style="max-width: 300px;">
+    {% endif %}
+    <p><strong>Link do Produto:</strong> <a href="{{ gift.product_link }}" target="_blank">{{ gift.product_link }}</a></p>
+    <p><strong>Prioridade:</strong> {{ gift.priority }}</p>
+    <p><strong>Permitir contribuições simultâneas:</strong> {{ gift.allow_simultaneous_contributions|yesno:"Sim,Não" }}</p>
+
+    <a href="{% url 'gifts:gift_edit' gift.pk %}" class="btn btn-primary">Editar</a>
+    <a href="{% url 'gifts:gift_delete' gift.pk %}" class="btn btn-danger">Excluir</a>
+    <a href="{% url 'events:event_detail' gift.event.pk %}" class="btn btn-secondary">Voltar ao Evento</a>
+</div>
+{% endblock %}

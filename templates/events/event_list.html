@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Meus Eventos</h1>
+    <a href="{% url 'events:event_create' %}" class="btn btn-primary mb-3">Criar Novo Evento</a>
+    <div class="list-group">
+        {% for event in events %}
+        <a href="{% url 'events:event_detail' event.pk %}" class="list-group-item list-group-item-action">
+            <h5>{{ event.name }}</h5>
+            <p>Data: {{ event.date }}</p>
+            <p>Visibilidade: {{ event.get_visibility_display }}</p>
+        </a>
+        {% empty %}
+        <p>Você não possui eventos cadastrados.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
