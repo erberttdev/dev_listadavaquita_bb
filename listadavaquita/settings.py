@@ -138,6 +138,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Authentication backends
 
+# Custom user model
+AUTH_USER_MODEL = 'users.CustomUser'
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -164,8 +167,8 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-# Custom user model
-AUTH_USER_MODEL = 'users.CustomUser'
+
+
 
 # Email backend (for development, console)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
