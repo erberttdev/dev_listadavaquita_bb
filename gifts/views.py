@@ -3,9 +3,12 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Gift
 from events.models import Event
-from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from events.models import Event
+from django.shortcuts import get_object_or_404, redirect
+from django.views.generic.edit import CreateView
+from .forms import GiftForm
+
 
 class GiftCreateView(CreateView):
     model = Gift
@@ -29,8 +32,8 @@ class GiftCreateView(CreateView):
         return context
 
     def get_success_url(self):
-        # Redireciona de volta para o detalhe do evento após salvar
-        return reverse('events:event_detail', args=[self.event.pk])
+        return self.event.get_absolute_url()  # ou reverse('events:event_detail', args=[self.event.pk])
+
 
 class GiftDetailView(LoginRequiredMixin, DetailView):
     model = Gift
