@@ -3,6 +3,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from events.models import Event
 from gifts.models import Gift
 from contributions.models import Contribution
+from django.shortcuts import render
+
+
+@login_required
+def dashboard(request):
+    return render(request, 'users/dashboard.html')
+
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'users/dashboard.html'
