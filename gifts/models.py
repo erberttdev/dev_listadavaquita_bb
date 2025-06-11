@@ -19,6 +19,8 @@ class Gift(models.Model):
     priority = models.PositiveIntegerField('Prioridade', default=0)
     allow_simultaneous_contributions = models.BooleanField('Permitir contribuições simultâneas', default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='gifts/', blank=True, null=True)
+    anonymous_contributions = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.name} - {self.event.name}"

@@ -3,18 +3,34 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Gift
 from events.models import Event
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from events.models import Event
 
-class GiftCreateView(LoginRequiredMixin, CreateView):
+class GiftCreateView(CreateView):
     model = Gift
-    fields = ['event', 'name', 'value', 'store_name', 'store_type', 'store_address_or_link', 'photo', 'product_link', 'priority', 'allow_simultaneous_contributions']
+    fields = ['name', 'value', 'image']  # ajuste os campos conforme o seu modelo
     template_name = 'gifts/gift_form.html'
-    success_url = reverse_lazy('events:event_list')
 
-    def get_form(self, *args, **kwargs):
-        form = super().get_form(*args, **kwargs)
-        # Limitar eventos ao usuário logado
-        form.fields['event'].queryset = Event.objects.filter(user=self.request.user)
-        return form
+    def dispatch(self, request, *args, **kwargs):
+        # Captura o evento ao qual o presente será associado
+        self.event = get_object_or_404(Event, pk=self.kwargs['event_pk'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        # Associa o presente ao evento antes de salvar
+        form.instance.event = self.event
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        # Adiciona o evento ao contexto do template
+        context = super().get_context_data(**kwargs)
+        context['event'] = self.event
+        return context
+
+    def get_success_url(self):
+        # Redireciona de volta para o detalhe do evento após salvar
+        return reverse('events:event_detail', args=[self.event.pk])
 
 class GiftDetailView(LoginRequiredMixin, DetailView):
     model = Gift
