@@ -10,6 +10,19 @@ from django.views.generic.edit import CreateView
 from .forms import GiftForm
 
 
+from django.core.management import call_command
+from django.http import HttpResponse
+
+def show_migrations_view(request):
+    import io
+    from contextlib import redirect_stdout
+
+    f = io.StringIO()
+    with redirect_stdout(f):
+        call_command('show_migrations')
+    output = f.getvalue()
+    return HttpResponse(f"<pre>{output}</pre>")
+
 class GiftCreateView(CreateView):
     model = Gift
     fields = ['name', 'value', 'image']  # ajuste os campos conforme o seu modelo
