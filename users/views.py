@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from events.models import Event
 from gifts.models import Gift
 from contributions.models import Contribution
