@@ -7,7 +7,6 @@
     <p><strong>Visibilidade:</strong> {{ event.get_visibility_display }}</p>
 
     <h3>Presentes</h3>
-    <a href="{% url 'gifts:gift_add' %}" class="btn btn-primary mb-3">Adicionar Presente</a>
     <a href="{% url 'gifts:gift_add' event.pk %}" class="btn btn-primary mb-3">Adicionar Presente</a>
     <ul class="list-group">
         {% for gift in event.gifts.all %}
