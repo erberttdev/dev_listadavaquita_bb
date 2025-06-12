@@ -4,6 +4,8 @@
 <div class="container mt-4">
     <h1>Dashboard</h1>
 
+    <a href="{% url 'events:event_create' %}" class="btn btn-primary mb-3">Criar novo evento</a>
+
     <h3>Meus Eventos</h3>
     <ul class="list-group mb-4">
         {% for event in events %}
