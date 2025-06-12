@@ -24,7 +24,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
 from django.urls import reverse
 from gifts.utils import generate_qr_code_base64
 
-class EventDetailView(LoginRequiredMixin, DetailView):
+class EventDetailView(DetailView):
     model = Event
     template_name = 'events/event_detail.html'
     context_object_name = 'event'
