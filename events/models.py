@@ -15,3 +15,7 @@ class Event(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.date})"
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('events:event_detail', kwargs={'pk': self.pk})
