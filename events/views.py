@@ -24,7 +24,10 @@ class EventCreateView(LoginRequiredMixin, CreateView):
 from django.urls import reverse
 from gifts.utils import generate_qr_code_base64
 
-class EventDetailView(DetailView):
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import DetailView
+
+class EventDetailView(LoginRequiredMixin, DetailView):
     model = Event
     template_name = 'events/event_detail.html'
     context_object_name = 'event'
@@ -32,7 +35,20 @@ class EventDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         event = self.get_object()
-        url = self.request.build_absolute_uri(reverse('events:event_detail', args=[event.pk]))
+        url = self.request.build_absolute_uri(reverse('events:event_public_detail', args=[event.pk]))
+        context['event_url'] = url
+        context['event_qr_code'] = generate_qr_code_base64(url)
+        return context
+
+class EventPublicDetailView(DetailView):
+    model = Event
+    template_name = 'events/event_public_detail.html'
+    context_object_name = 'event'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        event = self.get_object()
+        url = self.request.build_absolute_uri(reverse('events:event_public_detail', args=[event.pk]))
         context['event_url'] = url
         context['event_qr_code'] = generate_qr_code_base64(url)
         return context
