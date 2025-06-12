@@ -15,6 +15,13 @@ class ContributionCreateView(CreateView):
         form.instance.gift = gift
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        gift_id = self.kwargs.get('gift_id')
+        gift = get_object_or_404(Gift, id=gift_id)
+        context['gift'] = gift
+        return context
+
     def get_success_url(self):
         return reverse_lazy('contributions:progress', kwargs={'gift_id': self.object.gift.id})
 
