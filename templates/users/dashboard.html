@@ -14,27 +14,5 @@
         <li class="list-group-item">Nenhum evento cadastrado.</li>
         {% endfor %}
     </ul>
-
-    <h3>Meus Presentes</h3>
-    <ul class="list-group mb-4">
-        {% for gift in gifts %}
-        <li class="list-group-item">
-            <a href="{% url 'gifts:gift_detail' gift.pk %}">{{ gift.name }}</a> - R$ {{ gift.value }}
-        </li>
-        {% empty %}
-        <li class="list-group-item">Nenhum presente cadastrado.</li>
-        {% endfor %}
-    </ul>
-
-    <h3>Minhas Contribuições Recebidas</h3>
-    <ul class="list-group">
-        {% for contribution in contributions %}
-        <li class="list-group-item">
-            {{ contribution.name }} contribuiu R$ {{ contribution.amount }} para {{ contribution.gift.name }} - Status: {{ contribution.payment_status }}
-        </li>
-        {% empty %}
-        <li class="list-group-item">Nenhuma contribuição recebida.</li>
-        {% endfor %}
-    </ul>
 </div>
 {% endblock %}

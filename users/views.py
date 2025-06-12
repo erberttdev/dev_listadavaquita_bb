@@ -19,6 +19,5 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         context['events'] = Event.objects.filter(user=user)
-        context['gifts'] = Gift.objects.filter(event__user=user)
-        context['contributions'] = Contribution.objects.filter(gift__event__user=user)
+        # Removendo gifts e contributions do contexto para exibir apenas eventos
         return context
