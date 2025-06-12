@@ -8,13 +8,25 @@
 
     <h3>Meus Eventos</h3>
     <ul class="list-group mb-4">
-        {% for event in events %}
+        {% for item in events %}
         <li class="list-group-item">
-            <a href="{% url 'events:event_detail' event.pk %}">{{ event.name }}</a> - {{ event.date }}
+            <a href="{% url 'events:event_detail' item.event.pk %}">{{ item.event.name }}</a> - {{ item.event.date }}
+            <button class="btn btn-outline-primary btn-sm ms-2" onclick="copyToClipboard('{{ item.event_url }}')">Copiar Link</button>
+            <img src="{{ item.event_qr_code }}" alt="QR Code para compartilhar o evento" style="width:50px; height:50px; margin-left:10px;">
         </li>
         {% empty %}
         <li class="list-group-item">Nenhum evento cadastrado.</li>
         {% endfor %}
     </ul>
 </div>
+
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        alert('Link copiado para a área de transferência!');
+    }, function(err) {
+        alert('Erro ao copiar o link: ', err);
+    });
+}
+</script>
 {% endblock %}

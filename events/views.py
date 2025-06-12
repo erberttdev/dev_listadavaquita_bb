@@ -21,10 +21,21 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+from django.urls import reverse
+from gifts.utils import generate_qr_code_base64
+
 class EventDetailView(LoginRequiredMixin, DetailView):
     model = Event
     template_name = 'events/event_detail.html'
     context_object_name = 'event'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        event = self.get_object()
+        url = self.request.build_absolute_uri(reverse('events:event_detail', args=[event.pk]))
+        context['event_url'] = url
+        context['event_qr_code'] = generate_qr_code_base64(url)
+        return context
 
 class EventUpdateView(LoginRequiredMixin, UpdateView):
     model = Event

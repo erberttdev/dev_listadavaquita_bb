@@ -129,3 +129,20 @@ def _scrape_amazon(soup, url):
         data['error'] = f'Erro ao processar página da Amazon: {e}'
 
     return data
+
+import qrcode
+import base64
+from io import BytesIO
+
+def generate_qr_code_base64(data):
+    """
+    Gera um QR code em base64 a partir de uma string de dados (ex: URL).
+    """
+    qr = qrcode.QRCode(version=1, box_size=10, border=4)
+    qr.add_data(data)
+    qr.make(fit=True)
+    img = qr.make_image(fill='black', back_color='white')
+    buffered = BytesIO()
+    img.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue()).decode()
+    return f"data:image/png;base64,{img_str}"

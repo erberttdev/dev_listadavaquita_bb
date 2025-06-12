@@ -9,10 +9,18 @@
     <a href="{% url 'events:event_edit' event.pk %}" class="btn btn-warning mb-3">Editar Evento</a>
     <a href="{% url 'events:event_delete' event.pk %}" class="btn btn-danger mb-3">Excluir Evento</a>
 
+    <div class="mb-3">
+        <h4>Compartilhar Lista</h4>
+        <button class="btn btn-outline-primary" onclick="copyToClipboard('{{ event_url }}')">Copiar Link</button>
+        <div class="mt-2">
+            <img src="{{ event_qr_code }}" alt="QR Code para compartilhar o evento" style="width:150px; height:150px;">
+        </div>
+    </div>
+
     <h3>Presentes</h3>
     <a href="{% url 'gifts:gift_add' event.pk %}" class="btn btn-primary mb-3">Adicionar Presente</a>
     <ul class="list-group">
-        {% for gift in event.gifts.all %}
+        {% for gift in event.gifts.all %} 
         <li class="list-group-item d-flex justify-content-between align-items-center">
             {{ gift.name }} - R$ {{ gift.value }}
             <a href="{% url 'gifts:gift_detail' gift.pk %}" class="btn btn-sm btn-info">Detalhes</a>
@@ -22,4 +30,14 @@
         {% endfor %}
     </ul>
 </div>
+
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        alert('Link copiado para a área de transferência!');
+    }, function(err) {
+        alert('Erro ao copiar o link: ', err);
+    });
+}
+</script>
 {% endblock %}
