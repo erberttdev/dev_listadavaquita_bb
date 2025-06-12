@@ -48,7 +48,7 @@ class GiftCreateView(CreateView):
         return self.event.get_absolute_url()  # ou reverse('events:event_detail', args=[self.event.pk])
 
 
-class GiftDetailView(LoginRequiredMixin, DetailView):
+class GiftDetailView(DetailView):
     model = Gift
     template_name = 'gifts/gift_detail.html'
     context_object_name = 'gift'
