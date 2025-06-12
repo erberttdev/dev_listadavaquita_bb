@@ -6,6 +6,9 @@
     <p><strong>Data:</strong> {{ event.date }}</p>
     <p><strong>Visibilidade:</strong> {{ event.get_visibility_display }}</p>
 
+    <a href="{% url 'events:event_edit' event.pk %}" class="btn btn-warning mb-3">Editar Evento</a>
+    <a href="{% url 'events:event_delete' event.pk %}" class="btn btn-danger mb-3">Excluir Evento</a>
+
     <h3>Presentes</h3>
     <a href="{% url 'gifts:gift_add' event.pk %}" class="btn btn-primary mb-3">Adicionar Presente</a>
     <ul class="list-group">
