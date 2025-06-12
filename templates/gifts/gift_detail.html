@@ -13,8 +13,10 @@
     <p><strong>Prioridade:</strong> {{ gift.priority }}</p>
     <p><strong>Permitir contribuições simultâneas:</strong> {{ gift.allow_simultaneous_contributions|yesno:"Sim,Não" }}</p>
 
+    {% if user.is_authenticated and user == gift.event.user %}
     <a href="{% url 'gifts:gift_edit' gift.pk %}" class="btn btn-primary">Editar</a>
     <a href="{% url 'gifts:gift_delete' gift.pk %}" class="btn btn-danger">Excluir</a>
+    {% endif %}
     <a href="{% url 'events:event_detail' gift.event.pk %}" class="btn btn-secondary">Voltar ao Evento</a>
 </div>
 {% endblock %}

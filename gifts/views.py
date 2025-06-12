@@ -58,6 +58,10 @@ class GiftUpdateView(LoginRequiredMixin, UpdateView):
     fields = ['name', 'value', 'store_name', 'store_type', 'store_address_or_link', 'photo', 'product_link', 'priority', 'allow_simultaneous_contributions']
     template_name = 'gifts/gift_form.html'
 
+    def get_queryset(self):
+        # Restringe a edição apenas para presentes cujo evento pertence ao usuário autenticado
+        return Gift.objects.filter(event__user=self.request.user)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['event'] = self.object.event
@@ -69,6 +73,10 @@ class GiftUpdateView(LoginRequiredMixin, UpdateView):
 class GiftDeleteView(LoginRequiredMixin, DeleteView):
     model = Gift
     template_name = 'gifts/gift_confirm_delete.html'
+
+    def get_queryset(self):
+        # Restringe a exclusão apenas para presentes cujo evento pertence ao usuário autenticado
+        return Gift.objects.filter(event__user=self.request.user)
 
     def get_success_url(self):
         return reverse_lazy('events:event_detail', kwargs={'pk': self.object.event.pk})
