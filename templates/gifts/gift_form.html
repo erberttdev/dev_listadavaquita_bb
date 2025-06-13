@@ -1,4 +1,3 @@
-{# templates/gifts/gift_form.html #}
 {% extends 'base.html' %}
 
 {% block content %}
@@ -9,8 +8,36 @@
         {% csrf_token %}
         {{ form.as_p }}
 
+        <div class="form-group">
+            <label for="id_fundraising_value">Valor da Vaquinha (Valor do Presente * 1.15):</label>
+            <input type="text" id="id_fundraising_value" name="fundraising_value" readonly class="form-control" value="{% if gift and gift.fundraising_value %}{{ gift.fundraising_value }}{% endif %}">
+        </div>
+
         <button type="submit" class="btn btn-success">Salvar</button>
         <a href="{% url 'events:event_detail' event.pk %}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const valueInput = document.getElementById('id_value');
+        const fundraisingValueInput = document.getElementById('id_fundraising_value');
+
+        function updateFundraisingValue() {
+            let value = parseFloat(valueInput.value);
+            if (!isNaN(value)) {
+                let fundraisingValue = (value * 1.15).toFixed(2);
+                fundraisingValueInput.value = fundraisingValue;
+            } else {
+                fundraisingValueInput.value = '';
+            }
+        }
+
+        if (valueInput) {
+            valueInput.addEventListener('input', updateFundraisingValue);
+            // Atualiza o valor ao carregar a página
+            updateFundraisingValue();
+        }
+    });
+</script>
 {% endblock %}

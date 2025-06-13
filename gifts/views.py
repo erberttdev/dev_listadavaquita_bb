@@ -36,6 +36,9 @@ class GiftCreateView(CreateView):
     def form_valid(self, form):
         # Associa o presente ao evento antes de salvar
         form.instance.event = self.event
+        # Calcula o valor da vaquinha como 1.15 * value
+        if form.instance.value:
+            form.instance.fundraising_value = form.instance.value * 1.15
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -61,6 +64,12 @@ class GiftUpdateView(LoginRequiredMixin, UpdateView):
     def get_queryset(self):
         # Restringe a edição apenas para presentes cujo evento pertence ao usuário autenticado
         return Gift.objects.filter(event__user=self.request.user)
+
+    def form_valid(self, form):
+        # Calcula o valor da vaquinha como 1.15 * value
+        if form.instance.value:
+            form.instance.fundraising_value = form.instance.value * 1.15
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

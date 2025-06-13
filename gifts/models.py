@@ -11,6 +11,7 @@ class Gift(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='gifts')
     name = models.CharField('Nome do Presente', max_length=255)
     value = models.DecimalField('Valor do Presente', max_digits=10, decimal_places=2)
+    fundraising_value = models.DecimalField('Valor da Vaquinha', max_digits=10, decimal_places=2, blank=True, null=True)
     store_name = models.CharField('Nome da Loja', max_length=255, blank=True, null=True)
     store_type = models.CharField('Tipo da Loja', max_length=10, choices=STORE_TYPE_CHOICES, blank=True, null=True)
     store_address_or_link = models.URLField('Endereço da Loja ou Link do Produto', blank=True, null=True)
