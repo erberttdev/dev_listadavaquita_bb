@@ -23,8 +23,5 @@ class GiftForm(forms.ModelForm):
             'photo',
             'value',
             'store_name',
-            'store_address_or_link',
-            'priority',
-            'allow_simultaneous_contributions',
             'anonymous_contributions',
         ]
