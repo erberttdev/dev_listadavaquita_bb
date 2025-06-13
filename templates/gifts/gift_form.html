@@ -6,10 +6,60 @@
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        
+        <div class="form-group">
+            <label>Tipo da Loja:</label>
+            {{ form.store_type }}
+        </div>
 
         <div class="form-group">
-            <label for="id_fundraising_value">Valor da Vaquinha (Valor do Presente * 1.15):</label>
+            <label for="id_product_link">Link do Produto (para preenchimento automático):</label>
+            {{ form.product_link }}
+            <small class="form-text text-muted">Informe o link do produto para tentar preenchimento automático via scraping.</small>
+        </div>
+
+        <div class="form-group">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+        </div>
+
+        <div class="form-group">
+            {{ form.photo.label_tag }}
+            {{ form.photo }}
+        </div>
+
+        <div class="form-group">
+            {{ form.value.label_tag }}
+            {{ form.value }}
+        </div>
+
+        <div class="form-group">
+            {{ form.store_name.label_tag }}
+            {{ form.store_name }}
+        </div>
+
+        <div class="form-group">
+            {{ form.store_address_or_link.label_tag }}
+            {{ form.store_address_or_link }}
+        </div>
+
+        <div class="form-group">
+            {{ form.priority.label_tag }}
+            {{ form.priority }}
+        </div>
+
+        <div class="form-group">
+            {{ form.allow_simultaneous_contributions.label_tag }}
+            {{ form.allow_simultaneous_contributions }}
+        </div>
+
+        <div class="form-group">
+            {{ form.anonymous_contributions.label_tag }}
+            {{ form.anonymous_contributions }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_fundraising_value">Valor da Vaquinha (Preço do Produto * 1.15):</label>
             <input type="text" id="id_fundraising_value" name="fundraising_value" readonly class="form-control" value="{% if gift and gift.fundraising_value %}{{ gift.fundraising_value }}{% endif %}">
         </div>
 
@@ -35,7 +85,6 @@
 
         if (valueInput) {
             valueInput.addEventListener('input', updateFundraisingValue);
-            // Atualiza o valor ao carregar a página
             updateFundraisingValue();
         }
     });
