@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1>Meus Eventos</h1>
+    <h1>Minhas Listas</h1>
     <a href="{% url 'events:event_create' %}" class="btn btn-primary mb-3">Criar Novo Evento</a>
     <div class="list-group">
         {% for event in events %}
