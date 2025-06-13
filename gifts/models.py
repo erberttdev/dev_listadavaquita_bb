@@ -16,7 +16,7 @@ class Gift(models.Model):
     store_type = models.CharField('Tipo da Loja', max_length=10, choices=STORE_TYPE_CHOICES, blank=True, null=True)
     store_address_or_link = models.URLField('Endereço da Loja ou Link do Produto', blank=True, null=True)
     photo = models.ImageField('Foto do Presente', upload_to='gift_photos/', blank=True, null=True)
-    product_link = models.URLField('Link do Produto', blank=True, null=True)
+    product_link = models.URLField('Link do Produto', max_length=500, blank=True, null=True)
     priority = models.PositiveIntegerField('Prioridade', default=0)
     allow_simultaneous_contributions = models.BooleanField('Permitir contribuições simultâneas', default=True)
     created_at = models.DateTimeField(auto_now_add=True)
