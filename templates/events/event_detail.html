@@ -22,8 +22,14 @@
     <ul class="list-group">
         {% for gift in event.gifts.all %} 
         <li class="list-group-item d-flex justify-content-between align-items-center">
-            {{ gift.name }} - R$ {{ gift.value }}
-            <a href="{% url 'contributions:contribute' gift.pk %}" class="btn btn-sm btn-info">Contribuir</a>
+            <a href="{% url 'gifts:gift_detail' gift.pk %}">{{ gift.name }}</a> - R$ {{ gift.value }}
+            <div>
+                <a href="{% url 'contributions:contribute' gift.pk %}" class="btn btn-sm btn-info">Contribuir</a>
+                {% if user.is_authenticated and user == event.user %}
+                <a href="{% url 'gifts:gift_edit' gift.pk %}" class="btn btn-sm btn-primary">Editar</a>
+                <a href="{% url 'gifts:gift_delete' gift.pk %}" class="btn btn-sm btn-danger">Excluir</a>
+                {% endif %}
+            </div>
         </li>
         {% empty %}
         <li class="list-group-item">Nenhum presente cadastrado.</li>
