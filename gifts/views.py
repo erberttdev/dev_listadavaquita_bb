@@ -1,4 +1,5 @@
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from decimal import Decimal
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Gift
@@ -38,7 +39,7 @@ class GiftCreateView(CreateView):
         form.instance.event = self.event
         # Calcula o valor da vaquinha como 1.15 * value
         if form.instance.value:
-            form.instance.fundraising_value = form.instance.value * 1.15
+            form.instance.fundraising_value = form.instance.value * Decimal('1.15')
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -68,7 +69,7 @@ class GiftUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         # Calcula o valor da vaquinha como 1.15 * value
         if form.instance.value:
-            form.instance.fundraising_value = form.instance.value * 1.15
+            form.instance.fundraising_value = form.instance.value * Decimal('1.15')
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
