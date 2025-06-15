@@ -25,3 +25,31 @@ class Gift(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.event.name}"
+
+class CatalogProduct(models.Model):
+    name = models.CharField('Nome do Produto', max_length=255)
+    image_url = models.URLField('URL da Imagem', max_length=500)
+    price = models.DecimalField('Preço (R$)', max_digits=10, decimal_places=2)
+    affiliate_link = models.URLField('Link de Afiliado', max_length=500)
+
+    def __str__(self):
+        return self.name
+
+class GiftList(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='gift_lists')
+    name = models.CharField('Nome da Lista', max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.user.username}"
+
+class GiftListItem(models.Model):
+    gift_list = models.ForeignKey(GiftList, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(CatalogProduct, on_delete=models.CASCADE)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('gift_list', 'product')
+
+    def __str__(self):
+        return f"{self.product.name} in {self.gift_list.name}"

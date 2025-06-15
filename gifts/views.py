@@ -1,15 +1,13 @@
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView, View
 from decimal import Decimal
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Gift
+from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponseRedirect
+from .models import Gift, CatalogProduct, GiftList, GiftListItem
 from events.models import Event
-from django.urls import reverse
-from events.models import Event
-from django.shortcuts import get_object_or_404, redirect
-from django.views.generic.edit import CreateView
-from .forms import GiftForm
-
+from .forms import GiftForm, AddToGiftListForm
+from django.contrib import messages
 
 from django.core.management import call_command
 from django.http import HttpResponse
@@ -24,9 +22,7 @@ def show_migrations_view(request):
     output = f.getvalue()
     return HttpResponse(f"<pre>{output}</pre>")
 
-from .forms import GiftForm
 from .utils import scrape_product_data
-from decimal import Decimal
 
 class GiftCreateView(CreateView):
     model = Gift
@@ -106,3 +102,22 @@ class GiftDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('events:event_detail', kwargs={'pk': self.object.event.pk})
+
+class CatalogProductListView(ListView):
+    model = CatalogProduct
+    template_name = 'gifts/catalog_product_list.html'
+    context_object_name = 'products'
+    paginate_by = 20
+
+class AddProductToGiftListView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        product_id = kwargs.get('product_id')
+        product = get_object_or_404(CatalogProduct, id=product_id)
+        gift_list, created = GiftList.objects.get_or_create(user=request.user, name='Minha Lista de Presentes')
+        # Check if product already in gift list
+        if GiftListItem.objects.filter(gift_list=gift_list, product=product).exists():
+            messages.info(request, 'Produto já está na sua lista de presentes.')
+        else:
+            GiftListItem.objects.create(gift_list=gift_list, product=product)
+            messages.success(request, 'Produto adicionado à sua lista de presentes.')
+        return redirect('gifts:catalog_product_list')

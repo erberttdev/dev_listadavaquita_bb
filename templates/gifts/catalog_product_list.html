@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Catálogo de Produtos</h1>
+
+<ul>
+  {% for product in products %}
+  <li>
+    <h3>{{ product.name }}</h3>
+    <img src="{{ product.image_url }}" alt="{{ product.name }}" style="max-width:200px;">
+    <p>Preço: R$ {{ product.price }}</p>
+    <p><a href="{{ product.affiliate_link }}" target="_blank">Ver mais detalhes na Amazon</a></p>
+    <form method="post" action="{% url 'gifts:add_product_to_gift_list' product.id %}">
+      {% csrf_token %}
+      <button type="submit">Adicionar à lista de presentes</button>
+    </form>
+  </li>
+  {% empty %}
+  <li>Nenhum produto disponível no catálogo.</li>
+  {% endfor %}
+</ul>
+
+{% if is_paginated %}
+  <div>
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+    {% endif %}
+    <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% endblock %}
